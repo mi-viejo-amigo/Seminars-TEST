@@ -72,7 +72,7 @@ const SeminarsList = () => {
 
   if (loading) {
     return (
-      <Container sx={{ mt: 4 }} component="section">
+      <Container sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center'}} component="section">
         <Typography variant="h2" gutterBottom textAlign="center">
           Семинары
         </Typography>
@@ -83,7 +83,7 @@ const SeminarsList = () => {
 
   if (seminars.length === 0) {
     return (
-      <Container sx={{ mt: 4 }} component="section">
+      <Container sx={{ mt: 4}} component="section">
         <Typography variant="h2" gutterBottom textAlign="center">
           Семинары
         </Typography>
@@ -104,7 +104,7 @@ const SeminarsList = () => {
   };
 
   return (
-    <Container sx={{ mt: 4 }} component="section">
+    <Container sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center'}} component="section">
       <Typography variant="h2" gutterBottom textAlign="center">
         Семинары
       </Typography>
@@ -158,7 +158,7 @@ const SeminarsList = () => {
                         Редактировать
                       </Button>
                       <Button size="small" color="error" onClick={() => setDeleteSeminarId(seminar.id)} disabled={isDeleting}>
-                        {isDeleting ? <CircularProgress size={20} /> : "Удалить"}
+                        { (isDeleting && deleteSeminarId === seminar.id) ? <CircularProgress size={20} /> : "Удалить"}
                       </Button>
                     </CardActions>
                   </Card>
