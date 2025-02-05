@@ -4,7 +4,7 @@ import ModalWrapper from "../modal/ModalWrapper";
 import EditModal from "../modal/EditModal";
 import ConfirmDeleteModal from "../modal/ConfirmDeleteModal";
 import { Seminar } from "../../types";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import Grid from "@mui/material/Grid2";
 import {
   Card,
@@ -18,6 +18,12 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+const spring = {
+  type: "spring",
+  damping: 20,
+  stiffness: 200,
+}
 
 const SeminarsList = () => {
   const [seminars, setSeminars] = useState<Seminar[]>([]);
@@ -111,61 +117,64 @@ const SeminarsList = () => {
 
 
       <Grid container component="ul" spacing={3}>
-        <AnimatePresence mode='popLayout'>
-            {seminars.map((seminar) => (
-              <Grid key={seminar.id} component="li">
-                <motion.div
-                  layout
-                  initial={{height: "100%"}}
-                  exit={{ opacity: 0, scale: 0.4, y: 50 }}
-                  transition={{ duration: 0.7 }}
-                >
-                  <Card
-                    sx={{
-                      width: 345,
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                    }}
+        <LayoutGroup>
+          <AnimatePresence mode='popLayout' initial={false} >
+              {seminars.map((seminar) => (
+                <Grid key={seminar.id} component="li">
+                  <motion.div
+                    layout
+                    key={seminar.id}
+                    style={{height: "100%"}}
+                    exit={{ opacity: 0, scale: 0.4, y: 50 }}
+                    transition={spring}
                   >
-                    <CardMedia component="img" height="200" image={seminar.photo} alt={seminar.title} />
-                    <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
-                      <Typography variant="h6" sx={{ mb: 1, minHeight: "3rem", display: "flex", alignItems: "center" }}>
-                        {seminar.title}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{
-                          flexGrow: 1,
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          display: "-webkit-box",
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: "vertical",
-                          mb: 1,
-                        }}
-                      >
-                        {seminar.description}
-                      </Typography>
-                      <Typography variant="body2" sx={{ textAlign: "left", color: "text.primary", mt: "auto" }}>
-                        📅 {seminar.date} ⏰ {seminar.time}
-                      </Typography>
-                    </CardContent>
-                    <CardActions sx={{ display: "flex", justifyContent: "space-between", mt: "auto", pt: 2 }}>
-                      <Button size="small" color="primary" onClick={() => setEditingSeminar(seminar)}>
-                        Редактировать
-                      </Button>
-                      <Button size="small" color="error" onClick={() => setDeleteSeminarId(seminar.id)} disabled={isDeleting}>
-                        { (isDeleting && deleteSeminarId === seminar.id) ? <CircularProgress size={20} /> : "Удалить"}
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </motion.div>
-              </Grid>
-            ))}
-        </AnimatePresence>
+                    <Card
+                      sx={{
+                        width: 345,
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <CardMedia component="img" height="200" image={seminar.photo} alt={seminar.title} />
+                      <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+                        <Typography variant="h6" sx={{ mb: 1, minHeight: "3rem", display: "flex", alignItems: "center" }}>
+                          {seminar.title}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{
+                            flexGrow: 1,
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 3,
+                            WebkitBoxOrient: "vertical",
+                            mb: 1,
+                          }}
+                        >
+                          {seminar.description}
+                        </Typography>
+                        <Typography variant="body2" sx={{ textAlign: "left", color: "text.primary", mt: "auto" }}>
+                          📅 {seminar.date} ⏰ {seminar.time}
+                        </Typography>
+                      </CardContent>
+                      <CardActions sx={{ display: "flex", justifyContent: "space-between", mt: "auto", pt: 2 }}>
+                        <Button size="small" color="primary" onClick={() => setEditingSeminar(seminar)}>
+                          Редактировать
+                        </Button>
+                        <Button size="small" color="error" onClick={() => setDeleteSeminarId(seminar.id)} disabled={isDeleting}>
+                          { (isDeleting && deleteSeminarId === seminar.id) ? <CircularProgress size={20} /> : "Удалить"}
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </motion.div>
+                </Grid>
+              ))}
+          </AnimatePresence>
+        </LayoutGroup>
       </Grid>
 
       
